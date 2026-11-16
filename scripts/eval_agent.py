@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import json
 import time
+import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -65,7 +66,9 @@ def build_payload(case: dict[str, Any]) -> dict[str, Any]:
     messages.append({"role": "user", "content": case["query"]})
     return {
         "messages": messages,
-        "conversation_id": f"agent-eval-{case['id']}",
+        # conversation_id 必须是合法 UUID（schemas 层已加校验）；用确定性 uuid5，
+        # 使同一 case 跨 run 得到相同会话 ID，保证可复现且不触发 422。
+        "conversation_id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"agent-eval-{case['id']}")),
         "domain": case["domain"],
         "agent_mode": case["request"]["agent_mode"],
         "temperature": 0,
