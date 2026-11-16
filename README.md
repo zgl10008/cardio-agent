@@ -21,34 +21,7 @@
 
 ## 架构
 
-```mermaid
-flowchart LR
-    subgraph Client
-        UI[React 前端]
-    end
-    subgraph API[FastAPI 服务]
-        Router[意图识别 / 模式路由]
-        Agent[Agent 编排器]
-        RAG[混合检索 RAG]
-        Mem[分层记忆]
-        Tools[工具注册表]
-    end
-    subgraph Infra[基础设施]
-        LLM[OpenAI 兼容 LLM]
-        Vec[Milvus Lite 向量库]
-        Redis[Redis]
-        PG[PostgreSQL]
-    end
-    UI --> API
-    Router --> Agent
-    Agent --> RAG
-    Agent --> Mem
-    Agent --> Tools
-    Agent --> LLM
-    RAG --> Vec
-    Mem --> Redis
-    Mem --> PG
-```
+![系统架构图](screenshots/智能问答平台_系统架构.svg)
 
 ## 快速开始
 
